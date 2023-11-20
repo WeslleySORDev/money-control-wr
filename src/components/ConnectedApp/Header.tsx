@@ -94,7 +94,7 @@ export function ConnectedAppHeader() {
                   placeholder="Título (tamanho máximo 56 caracters)"
                   maxLength={56}
                 />
-                <NumberInput defaultValue={0} min={0} allowMouseWheel>
+                <NumberInput defaultValue={0} min={0}>
                   <NumberInputField
                     value={modalInputAmount}
                     onChange={(e) =>

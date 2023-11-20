@@ -21,7 +21,7 @@ export function Summary() {
     }
   );
   return (
-    <Flex flexDirection="row" gap={8}>
+    <Flex flexDirection={{base: "column", lg: "row"}} gap={{lg: "8"}}>
       <Flex
         flex="1"
         alignItems="start"
@@ -30,11 +30,11 @@ export function Summary() {
         gap="24px"
         bgColor="rgb(40,42,45)"
         textColor="white"
-        borderRadius="4px"
+        borderRadius={{lg: "4px"}}
         padding="16px"
       >
         <Text>Entradas</Text>
-        <Heading>
+        <Heading fontSize={{base: "large", sm: "x-large", lg: "xx-large"}}>
           {new Intl.NumberFormat("pt-BR", {
             style: "currency",
             currency: "BRL",
@@ -49,11 +49,11 @@ export function Summary() {
         gap="24px"
         bgColor="rgb(40,42,45)"
         textColor="white"
-        borderRadius="4px"
+        borderRadius={{lg: "4px"}}
         padding="16px"
       >
         <Text>Saídas</Text>
-        <Heading>
+        <Heading fontSize={{base: "large", sm: "x-large", lg: "xx-large"}}>
           {new Intl.NumberFormat("pt-BR", {
             style: "currency",
             currency: "BRL",
@@ -66,13 +66,15 @@ export function Summary() {
         direction="column"
         align="center"
         gap="24px"
-        bgColor={summary.total > 0 ? "rgb(51,204,149)" : "rgba(229, 46, 77, 0.6)"}
+        bgColor={
+          summary.total > 0 ? "rgb(51,204,149)" : "rgba(229, 46, 77, 0.8)"
+        }
         textColor="white"
-        borderRadius="4px"
+        borderRadius={{lg: "4px"}}
         padding="16px"
       >
         <Text>Total</Text>
-        <Heading>
+        <Heading fontSize={{base: "large", sm: "x-large", lg: "xx-large"}}>
           {new Intl.NumberFormat("pt-BR", {
             style: "currency",
             currency: "BRL",
