@@ -32,6 +32,7 @@ interface ITransactionsContextData {
   transactions: TransactionFireStoreType[];
   createTransaction(transactionInput: ITransactionInput): Promise<void>;
   deleteTransaction(docId: string): Promise<void>;
+  clearAllTransactions(): Promise<void>;
 }
 
 const TransactionsContext = createContext<ITransactionsContextData>(
@@ -63,6 +64,7 @@ export function TransactionsProvider({ children }: ITransactionsProviderProps) {
       };
       transactionList.push(transaction);
     });
+    transactionList.sort((a, b) => a.createdAt - b.createdAt);
     return setTransactions(transactionList);
   };
 
@@ -101,6 +103,20 @@ export function TransactionsProvider({ children }: ITransactionsProviderProps) {
       console.log("Documento não encontrado!");
     }
   }
+
+  async function clearAllTransactions() {
+    transactions.map(async(transaction) => {
+      const docId = transaction.docId ? transaction.docId : 'unknown'
+      const docRef = doc(db, "transactions", docId);
+      const transactionDoc = await getDoc(docRef);
+      if (transactionDoc.exists()) {
+        await deleteDoc(docRef);
+      } else {
+        console.log("Documento não encontrado!");
+      }
+    });
+    setTransactions([]);
+  }
   useEffect(() => {
     const checkAuthentication = async () => {
       await new Promise((resolve) => setTimeout(resolve, 50));
@@ -115,7 +131,7 @@ export function TransactionsProvider({ children }: ITransactionsProviderProps) {
 
   return (
     <TransactionsContext.Provider
-      value={{ transactions, createTransaction, deleteTransaction }}
+      value={{ transactions, createTransaction, deleteTransaction, clearAllTransactions }}
     >
       {children}
     </TransactionsContext.Provider>

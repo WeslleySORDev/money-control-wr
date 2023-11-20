@@ -25,7 +25,7 @@ type ITransactionInput = Omit<TransactionType, "id" | "createdAt" | "ownerId">;
 export function ConnectedAppHeader() {
   const { user, handleSignOut } = UserAuth();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { createTransaction } = useTransactions();
+  const { createTransaction, clearAllTransactions } = useTransactions();
 
   const [modalInputTitle, setModalInputTitle] = useState("");
   const [modalInputAmount, setModalInputAmount] = useState(0);
@@ -66,9 +66,18 @@ export function ConnectedAppHeader() {
               Deslogar
             </Button>
           </Flex>
-          <Button variant="solid" colorScheme="red" onClick={onOpen}>
-            Nova Transação
-          </Button>
+          <ButtonGroup>
+            <Button
+              variant="solid"
+              colorScheme="red"
+              onClick={clearAllTransactions}
+            >
+              Limpar todas as minhas transações
+            </Button>
+            <Button variant="solid" colorScheme="red" onClick={onOpen}>
+              Nova Transação
+            </Button>
+          </ButtonGroup>
         </Flex>
       ) : null}
       <Modal isCentered isOpen={isOpen} onClose={onClose} size="xl">

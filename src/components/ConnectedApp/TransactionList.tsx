@@ -43,7 +43,7 @@ export function ConnectedAppTransactionList() {
                       }).format(transaction.amount)}
                     </Td>
                     <Td>{transaction.category}</Td>
-                    <Td>
+                    <Td bgColor={transaction.type === "Income" ? "rgba(18, 164, 84,0.6)" : "rgba(229, 46, 77, 0.6)"} textColor="white" textAlign="center">
                       {transaction.type === "Income" ? "Entrada" : "Retirada"}
                     </Td>
                     <Td>
