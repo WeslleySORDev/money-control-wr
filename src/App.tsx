@@ -1,8 +1,14 @@
 import { useEffect, useState } from "react";
 import { UserAuth } from "./context/AuthContext";
 
+import { Flex } from "@chakra-ui/react";
+import { Summary } from "./components/Summary";
+import { DisconnectedApp } from "./components/DisconnectedApp";
+import { ConnectedAppHeader } from "./components/ConnectedApp/Header";
+import { ConnectedAppTransactionList } from "./components/ConnectedApp/TransactionList";
+
 function App() {
-  const { user, handleSignIn, handleSignOut } = UserAuth();
+  const { user } = UserAuth();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -14,16 +20,21 @@ function App() {
   }, [user]);
   return (
     <main>
-      {loading ? null : !user ? (
-        <button onClick={handleSignIn}>Login com google</button>
-      ) : (
-        <>
-          <p>
-            Olá {user.displayName} {user.uid}
-          </p>
-          <button onClick={handleSignOut}>Deslogar</button>
-        </>
-      )}
+      <Flex flexDirection="column" padding="4" gap={4} minHeight="100vh">
+        <Summary />
+        <Flex flex="1">
+          {loading ? (
+            <p>Carregando...</p>
+          ) : !user ? (
+            <DisconnectedApp />
+          ) : (
+            <Flex flexDirection="column" gap={8} width="100%">
+              <ConnectedAppHeader />
+              <ConnectedAppTransactionList />
+            </Flex>
+          )}
+        </Flex>
+      </Flex>
     </main>
   );
 }
