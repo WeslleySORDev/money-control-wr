@@ -12,7 +12,7 @@ function App() {
     <main>
       <Flex flexDirection="column" padding={["0", "0", "0", "4"]} gap={4} minHeight="100vh">
         <Summary />
-        {/* <Flex flex="1">
+        <Flex flex="1">
           {!user ? (
             <DisconnectedApp />
           ) : (
@@ -21,7 +21,7 @@ function App() {
               <ConnectedAppTransactionList />
             </Flex>
           )}
-        </Flex> */}
+        </Flex>
       </Flex>
     </main>
   );

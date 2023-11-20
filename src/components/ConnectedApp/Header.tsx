@@ -59,25 +59,40 @@ export function ConnectedAppHeader() {
   return (
     <>
       {user ? (
-        <Flex justifyContent="space-between" alignItems="center">
-          <Flex alignItems="center" gap={4}>
-            <Text fontSize="large">Olá {user.displayName}</Text>
-            <Button onClick={handleSignOut} variant="solid" colorScheme="red">
-              Deslogar
-            </Button>
-          </Flex>
-          <ButtonGroup>
+        <Flex
+          flexDirection={{ base: "column", lg: "row" }}
+          justifyContent="space-between"
+          alignItems={{ lg: "center" }}
+        >
+          <Text fontSize={{ base: "medium", lg: "large" }}>
+            Olá {user.displayName}
+          </Text>
+          <Flex flexDirection={{ base: "column", lg: "row" }} gap={1}>
             <Button
+              onClick={handleSignOut}
               variant="solid"
               colorScheme="red"
-              onClick={clearAllTransactions}
+              borderRadius={{ base: 0, lg: "0.375rem" }}
             >
-              Limpar todas as minhas transações
+              Deslogar
             </Button>
-            <Button variant="solid" colorScheme="red" onClick={onOpen}>
+            <Button
+              onClick={clearAllTransactions}
+              variant="solid"
+              colorScheme="red"
+              borderRadius={{ base: 0, lg: "0.375rem" }}
+            >
+              Limpar as minhas transações
+            </Button>
+            <Button
+              onClick={onOpen}
+              variant="solid"
+              colorScheme="red"
+              borderRadius={{ base: 0, lg: "0.375rem" }}
+            >
               Nova Transação
             </Button>
-          </ButtonGroup>
+          </Flex>
         </Flex>
       ) : null}
       <Modal isCentered isOpen={isOpen} onClose={onClose} size="xl">

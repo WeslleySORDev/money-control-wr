@@ -25,9 +25,9 @@ export function ConnectedAppTransactionList() {
               <Tr>
                 <Th>Título</Th>
                 <Th>Valor</Th>
-                <Th>Categoria</Th>
-                <Th>Tipo</Th>
-                <Th>Data</Th>
+                <Th display={{base: 'none', lg: 'table-cell'}}>Categoria</Th>
+                <Th display={{base: 'none', lg: 'table-cell'}}>Tipo</Th>
+                <Th display={{base: 'none', lg: 'table-cell'}}>Data</Th>
                 <Th isNumeric>Excluir</Th>
               </Tr>
             </Thead>
@@ -36,17 +36,17 @@ export function ConnectedAppTransactionList() {
                 return (
                   <Tr key={transaction.docId}>
                     <Td>{transaction.title}</Td>
-                    <Td>
+                    <Td textColor={transaction.type === "Income" ? "rgba(18, 164, 84,0.6)" : "rgba(229, 46, 77, 0.6)"}>
                       {new Intl.NumberFormat("pt-BR", {
                         style: "currency",
                         currency: "BRL",
                       }).format(transaction.amount)}
                     </Td>
-                    <Td>{transaction.category}</Td>
-                    <Td bgColor={transaction.type === "Income" ? "rgba(18, 164, 84,0.6)" : "rgba(229, 46, 77, 0.6)"} textColor="white" textAlign="center">
+                    <Td display={{base: 'none', lg: 'table-cell'}}>{transaction.category}</Td>
+                    <Td display={{base: 'none', lg: 'table-cell'}} bgColor={transaction.type === "Income" ? "rgba(18, 164, 84,0.6)" : "rgba(229, 46, 77, 0.6)"} textColor="white" textAlign="center">
                       {transaction.type === "Income" ? "Entrada" : "Retirada"}
                     </Td>
-                    <Td>
+                    <Td display={{base: 'none', lg: 'table-cell'}}>
                       {new Intl.DateTimeFormat("pt-BR").format(
                         new Date(transaction.createdAt)
                       )}
