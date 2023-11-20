@@ -14,7 +14,7 @@ function App() {
   useEffect(() => {
     const checkAuthentication = async () => {
       await new Promise((resolve) => setTimeout(resolve, 50));
-      setLoading(false);
+      if (user) setLoading(false);
     };
     checkAuthentication();
   }, [user]);
@@ -23,9 +23,7 @@ function App() {
       <Flex flexDirection="column" padding="4" gap={4} minHeight="100vh">
         <Summary />
         <Flex flex="1">
-          {loading ? (
-            <p>Carregando...</p>
-          ) : !user ? (
+          {loading ? null : !user ? (
             <DisconnectedApp />
           ) : (
             <Flex flexDirection="column" gap={8} width="100%">
