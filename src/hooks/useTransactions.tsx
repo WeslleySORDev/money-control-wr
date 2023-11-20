@@ -84,8 +84,7 @@ export function TransactionsProvider({ children }: ITransactionsProviderProps) {
         await addDoc(collection(db, "transactions"), newTransaction);
       } catch (e) {
       } finally {
-        const newTransactions: any = [...transactions, newTransaction];
-        setTransactions(newTransactions);
+        getTransactionList();
       }
   }
 
