@@ -94,6 +94,7 @@ export function TransactionsProvider({ children }: ITransactionsProviderProps) {
     );
     let newTransactions = [...transactions];
     newTransactions.splice(indexOfTransaction, 1);
+    setTransactions(newTransactions);
     const docRef = doc(db, "transactions", docId);
     const transactionDoc = await getDoc(docRef);
     if (transactionDoc.exists()) {
@@ -104,8 +105,8 @@ export function TransactionsProvider({ children }: ITransactionsProviderProps) {
   }
 
   async function clearAllTransactions() {
-    transactions.map(async(transaction) => {
-      const docId = transaction.docId ? transaction.docId : 'unknown'
+    transactions.map(async (transaction) => {
+      const docId = transaction.docId ? transaction.docId : "unknown";
       const docRef = doc(db, "transactions", docId);
       const transactionDoc = await getDoc(docRef);
       if (transactionDoc.exists()) {
@@ -130,7 +131,12 @@ export function TransactionsProvider({ children }: ITransactionsProviderProps) {
 
   return (
     <TransactionsContext.Provider
-      value={{ transactions, createTransaction, deleteTransaction, clearAllTransactions }}
+      value={{
+        transactions,
+        createTransaction,
+        deleteTransaction,
+        clearAllTransactions,
+      }}
     >
       {children}
     </TransactionsContext.Provider>
