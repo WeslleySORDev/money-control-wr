@@ -9,25 +9,23 @@ import {
   ModalHeader,
   ModalOverlay,
   useDisclosure,
-  FormControl,
   Input,
   ButtonGroup,
   NumberInput,
   NumberInputField,
 } from "@chakra-ui/react";
 import { UserAuth } from "../../context/AuthContext";
-import { useState } from "react";
+import { TransactionType } from "../../@types/Transaction";
 
-type TransactionType = {
-  title: string;
-  amount: number;
-  category: string;
-  type: string;
-};
+import { useState } from "react";
+import { useTransactions } from "../../hooks/useTransactions";
+
+type ITransactionInput = Omit<TransactionType, "id" | "createdAt" | "ownerId">;
 
 export function ConnectedAppHeader() {
   const { user, handleSignOut } = UserAuth();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { createTransaction } = useTransactions();
 
   const [modalInputTitle, setModalInputTitle] = useState("");
   const [modalInputAmount, setModalInputAmount] = useState(0);
@@ -38,18 +36,24 @@ export function ConnectedAppHeader() {
 
   const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const newTransaction: TransactionType = {
-      title: modalInputTitle,
-      type: modalSelectedType,
-      category: modalInputCategory,
-      amount: modalInputAmount,
-    };
-    setModalInputTitle("");
-    setModalInputAmount(0);
-    setModalInputCategory("");
-    setModalSelectedType("Income");
-    console.log(newTransaction);
-    onClose();
+    if (modalInputTitle !== "" && modalInputCategory !== "") {
+      if (user) {
+        const newTransaction: ITransactionInput = {
+          title: modalInputTitle,
+          type: modalSelectedType,
+          category: modalInputCategory,
+          amount: modalInputAmount,
+        };
+        createTransaction(newTransaction);
+        setModalInputTitle("");
+        setModalInputAmount(0);
+        setModalInputCategory("");
+        setModalSelectedType("Income");
+        onClose();
+      }
+    } else {
+      alert("Os campos Titulo e Categoria não podem estar vazios !");
+    }
   };
 
   return (
@@ -73,71 +77,75 @@ export function ConnectedAppHeader() {
           <ModalHeader>Cadastrar Nova Transação</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <FormControl display="flex" flexDirection="column" gap={4} onSubmit={(e) => submitForm(e)}>
-              <Input
-                value={modalInputTitle}
-                onChange={(e) => setModalInputTitle(e.currentTarget.value)}
-                placeholder="Nome"
-              />
-              <NumberInput defaultValue={0} min={0} allowMouseWheel>
-                <NumberInputField
-                  value={modalInputAmount}
-                  onChange={(e) =>
-                    setModalInputAmount(parseInt(e.currentTarget.value))
-                  }
+            <form onSubmit={(e) => submitForm(e)}>
+              <Flex display="flex" flexDirection="column" gap={4}>
+                <Input
+                  value={modalInputTitle}
+                  onChange={(e) => setModalInputTitle(e.currentTarget.value)}
+                  placeholder="Título (tamanho máximo 56 caracters)"
+                  maxLength={56}
                 />
-              </NumberInput>
-              <Input
-                value={modalInputCategory}
-                onChange={(e) => setModalInputCategory(e.currentTarget.value)}
-                placeholder="Categoria"
-              />
-              <ButtonGroup display="flex" gap={4}>
-                <Button
-                  flex="1"
-                  bgColor={
-                    modalSelectedType === "Income"
-                      ? "rgba(18, 164, 84,0.1)"
-                      : "white"
-                  }
-                  textColor="rgb(26, 32, 44)"
-                  border={
-                    modalSelectedType === "Income"
-                      ? ""
-                      : "1px solid rgb(226, 232, 240)"
-                  }
-                  onClick={() => setModalSelectedType("Income")}
-                  _hover={{
-                    bg: "rgba(18, 164, 84,0.1)",
-                  }}
-                >
-                  Entrada
+                <NumberInput defaultValue={0} min={0} allowMouseWheel>
+                  <NumberInputField
+                    value={modalInputAmount}
+                    onChange={(e) =>
+                      setModalInputAmount(parseInt(e.currentTarget.value))
+                    }
+                  />
+                </NumberInput>
+                <Input
+                  value={modalInputCategory}
+                  onChange={(e) => setModalInputCategory(e.currentTarget.value)}
+                  placeholder="Categoria (tamanho máximo 56 caracters)"
+                  maxLength={56}
+                />
+                <ButtonGroup display="flex" gap={4}>
+                  <Button
+                    flex="1"
+                    bgColor={
+                      modalSelectedType === "Income"
+                        ? "rgba(18, 164, 84,0.3)"
+                        : "white"
+                    }
+                    textColor="rgb(26, 32, 44)"
+                    border={
+                      modalSelectedType === "Income"
+                        ? ""
+                        : "1px solid rgb(226, 232, 240)"
+                    }
+                    onClick={() => setModalSelectedType("Income")}
+                    _hover={{
+                      bg: "rgba(18, 164, 84,0.3)",
+                    }}
+                  >
+                    Entrada
+                  </Button>
+                  <Button
+                    flex="1"
+                    bgColor={
+                      modalSelectedType === "Outcome"
+                        ? "rgba(229, 46, 77, 0.3)"
+                        : "white"
+                    }
+                    textColor="rgb(26, 32, 44)"
+                    border={
+                      modalSelectedType === "Outcome"
+                        ? ""
+                        : "1px solid rgb(226, 232, 240)"
+                    }
+                    onClick={() => setModalSelectedType("Outcome")}
+                    _hover={{
+                      bg: "rgba(229, 46, 77, 0.3)",
+                    }}
+                  >
+                    Saída
+                  </Button>
+                </ButtonGroup>
+                <Button marginBottom={4} type="submit" colorScheme="red">
+                  Cadastrar
                 </Button>
-                <Button
-                  flex="1"
-                  bgColor={
-                    modalSelectedType === "Outcome"
-                      ? "rgba(229, 46, 77, 0.1)"
-                      : "white"
-                  }
-                  textColor="rgb(26, 32, 44)"
-                  border={
-                    modalSelectedType === "Outcome"
-                      ? ""
-                      : "1px solid rgb(226, 232, 240)"
-                  }
-                  onClick={() => setModalSelectedType("Outcome")}
-                  _hover={{
-                    bg: "rgba(229, 46, 77, 0.1)",
-                  }}
-                >
-                  Saída
-                </Button>
-              </ButtonGroup>
-              <Button marginBottom={4} type="submit" colorScheme="red">
-                Cadastrar
-              </Button>
-            </FormControl>
+              </Flex>
+            </form>
           </ModalBody>
         </ModalContent>
       </Modal>

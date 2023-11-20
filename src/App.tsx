@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { UserAuth } from "./context/AuthContext";
 
 import { Flex } from "@chakra-ui/react";
@@ -9,21 +8,12 @@ import { ConnectedAppTransactionList } from "./components/ConnectedApp/Transacti
 
 function App() {
   const { user } = UserAuth();
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const checkAuthentication = async () => {
-      await new Promise((resolve) => setTimeout(resolve, 50));
-      if (user) setLoading(false);
-    };
-    checkAuthentication();
-  }, [user]);
   return (
     <main>
       <Flex flexDirection="column" padding="4" gap={4} minHeight="100vh">
         <Summary />
         <Flex flex="1">
-          {loading ? null : !user ? (
+          {!user ? (
             <DisconnectedApp />
           ) : (
             <Flex flexDirection="column" gap={8} width="100%">
