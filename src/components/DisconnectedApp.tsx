@@ -6,7 +6,7 @@ export function DisconnectedApp() {
   const { handleSignIn } = UserAuth();
   return (
     <Flex flexDirection="column" gap={8} margin="auto">
-      <Heading textUnderlineOffset="4" textDecoration="underline">
+      <Heading fontSize={{base: "large", sm: "x-large", lg: "xx-large"}} textUnderlineOffset="4" textDecoration="underline" textAlign="center">
         Você esta deslogado, faça login para utilizar o app
       </Heading>
       <Button
@@ -15,6 +15,7 @@ export function DisconnectedApp() {
         onClick={handleSignIn}
         variant="solid"
         colorScheme="telegram"
+        fontSize={{base: "small", md: "medium", lg: "large"}}
       >
         Login com google
       </Button>
