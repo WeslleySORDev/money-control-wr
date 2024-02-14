@@ -5,6 +5,7 @@ import {
   DialogTitle,
   DialogDescription,
   DialogHeader,
+  DialogClose,
 } from "./ui/dialog";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
@@ -142,9 +143,11 @@ export function ConnectedAppTransactionList() {
                   </Button>
                 </div>
               </div>
-              <Button variant="destructive" className="w-full" type="submit">
-                Cadastrar
-              </Button>
+              <DialogClose asChild>
+                <Button variant="destructive" className="w-full" type="submit">
+                  Cadastrar
+                </Button>
+              </DialogClose>
             </form>
           </DialogContent>
         </Dialog>

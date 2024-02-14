@@ -27,10 +27,12 @@ export function Summary() {
           <CardTitle>Entradas</CardTitle>
         </CardHeader>
         <CardContent>
-          {new Intl.NumberFormat("pt-BR", {
-            style: "currency",
-            currency: "BRL",
-          }).format(summary.deposits)}
+          {transactions.length > 0
+            ? new Intl.NumberFormat("pt-BR", {
+                style: "currency",
+                currency: "BRL",
+              }).format(summary.deposits)
+            : "Nenhuma transação"}
         </CardContent>
       </Card>
       <Card className="flex-1">
@@ -38,27 +40,33 @@ export function Summary() {
           <CardTitle>Saidas</CardTitle>
         </CardHeader>
         <CardContent>
-          {new Intl.NumberFormat("pt-BR", {
-            style: "currency",
-            currency: "BRL",
-          }).format(summary.withdraws)}
+          {transactions.length > 0
+            ? new Intl.NumberFormat("pt-BR", {
+                style: "currency",
+                currency: "BRL",
+              }).format(summary.withdraws)
+            : "Nenhuma transação"}
         </CardContent>
       </Card>
       <Card
         className={`flex-1 ${
-          summary.total >= 0
+          summary.total >= 0 && transactions.length > 0
             ? "bg-[rgba(18,_164,_84,0.3)]"
-            : "bg-[rgba(229,_46,_77,_0.3)]"
+            : summary.total < 0 && transactions.length > 0
+            ? "bg-[rgba(229,_46,_77,_0.3)]"
+            : transactions.length <= 0 && ""
         }`}
       >
         <CardHeader>
           <CardTitle>Total</CardTitle>
         </CardHeader>
         <CardContent>
-          {new Intl.NumberFormat("pt-BR", {
-            style: "currency",
-            currency: "BRL",
-          }).format(summary.total)}
+          {transactions.length > 0
+            ? new Intl.NumberFormat("pt-BR", {
+                style: "currency",
+                currency: "BRL",
+              }).format(summary.total)
+            : "Nenhuma transação"}
         </CardContent>
       </Card>
     </div>
