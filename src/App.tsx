@@ -1,16 +1,12 @@
 import { UserAuth } from "./context/AuthContext";
 
-import { Flex } from "@chakra-ui/react";
-import { Summary } from "./components/Summary";
-import { DisconnectedApp } from "./components/DisconnectedApp";
-import { ConnectedAppHeader } from "./components/ConnectedApp/Header";
-import { ConnectedAppTransactionList } from "./components/ConnectedApp/TransactionList";
-
 function App() {
   const { user } = UserAuth();
   return (
-    <main>
-      <Flex flexDirection="column" padding={["0", "0", "0", "4"]} gap={4} minHeight="100vh">
+    <div className="flex flex-col">
+      <header>header</header>
+      <main>
+        {/* <Flex flexDirection="column" padding={["0", "0", "0", "4"]} gap={4} minHeight="100vh">
         <Summary />
         <Flex flex="1">
           {!user ? (
@@ -22,8 +18,9 @@ function App() {
             </Flex>
           )}
         </Flex>
-      </Flex>
-    </main>
+      </Flex> */}
+      </main>
+    </div>
   );
 }
 
