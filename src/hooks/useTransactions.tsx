@@ -105,17 +105,19 @@ export function TransactionsProvider({ children }: ITransactionsProviderProps) {
   }
 
   async function clearAllTransactions() {
-    transactions.map(async (transaction) => {
-      const docId = transaction.docId ? transaction.docId : "unknown";
-      const docRef = doc(db, "transactions", docId);
-      const transactionDoc = await getDoc(docRef);
-      if (transactionDoc.exists()) {
-        await deleteDoc(docRef);
-      } else {
-        console.log("Documento não encontrado!");
-      }
-    });
-    setTransactions([]);
+    if (window.confirm("Deseja realmente apagar o item da lista?")) {
+      transactions.map(async (transaction) => {
+        const docId = transaction.docId ? transaction.docId : "unknown";
+        const docRef = doc(db, "transactions", docId);
+        const transactionDoc = await getDoc(docRef);
+        if (transactionDoc.exists()) {
+          await deleteDoc(docRef);
+        } else {
+          console.log("Documento não encontrado!");
+        }
+      });
+      setTransactions([]);
+    }
   }
   useEffect(() => {
     const checkAuthentication = async () => {
