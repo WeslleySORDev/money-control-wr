@@ -62,7 +62,7 @@ export function ConnectedAppTransactionList() {
     }
   };
   return (
-    <div className="flex flex-col gap-4 p-4">
+    <div className="flex flex-col gap-8">
       <div className="flex items-center gap-4">
         <Dialog>
           <DialogTrigger className="w-fit ml-auto" asChild>
@@ -171,14 +171,26 @@ export function ConnectedAppTransactionList() {
             {transactions.map((transaction) => (
               <TableRow key={transaction.docId}>
                 <TableCell>{transaction.title}</TableCell>
-                <TableCell>
+                <TableCell
+                  className={`${
+                    transaction.type === "Income"
+                      ? "text-[rgba(18,_164,_84,1.5)]"
+                      : "text-[rgba(229,_46,_77,_1.5)]"
+                  }`}
+                >
                   {new Intl.NumberFormat("pt-BR", {
                     style: "currency",
                     currency: "BRL",
                   }).format(transaction.amount)}
                 </TableCell>
                 <TableCell>{transaction.category}</TableCell>
-                <TableCell>
+                <TableCell
+                  className={`text-center font-semibold ${
+                    transaction.type === "Income"
+                      ? "bg-[rgba(18,_164,_84,0.3)]"
+                      : "bg-[rgba(229,_46,_77,_0.3)]"
+                  }`}
+                >
                   {transaction.type === "Income" ? "Entrada" : "Retirada"}
                 </TableCell>
                 <TableCell>

@@ -1,3 +1,4 @@
+import { Summary } from "./components/Summary";
 import { ConnectedAppHeader } from "./components/header";
 import { ConnectedAppTransactionList } from "./components/transaction-list";
 import { Button } from "./components/ui/button";
@@ -24,21 +25,9 @@ function App() {
           <ConnectedAppHeader />
         )}
       </header>
-      <main>
-        <ConnectedAppTransactionList />
-        {/* <Flex flexDirection="column" padding={["0", "0", "0", "4"]} gap={4} minHeight="100vh">
+      <main className="flex flex-col gap-8 p-4">
         <Summary />
-        <Flex flex="1">
-          {!user ? (
-            <DisconnectedApp />
-          ) : (
-            <Flex flexDirection="column" gap={8} width="100%">
-              <ConnectedAppHeader />
-              <ConnectedAppTransactionList />
-            </Flex>
-          )}
-        </Flex>
-      </Flex> */}
+        <ConnectedAppTransactionList />
       </main>
     </div>
   );
