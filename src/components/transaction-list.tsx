@@ -5,15 +5,24 @@ import {
   DialogTitle,
   DialogDescription,
   DialogHeader,
-  DialogFooter,
 } from "./ui/dialog";
-import { useTransactions } from "../hooks/useTransactions";
-import { Button } from "./ui/button";
-import { Label } from "@radix-ui/react-label";
 import { Input } from "./ui/input";
+import { Label } from "./ui/label";
+import { Button } from "./ui/button";
+import {
+  Table,
+  TableHeader,
+  TableRow,
+  TableHead,
+  TableBody,
+  TableCell,
+} from "./ui/table";
+
+import { useTransactions } from "../hooks/useTransactions";
 import { useState } from "react";
 import { TransactionType } from "@/@types/Transaction";
 import { UserAuth } from "@/context/AuthContext";
+import { Trash } from "lucide-react";
 
 type ITransactionInput = Omit<TransactionType, "id" | "createdAt" | "ownerId">;
 
@@ -47,7 +56,6 @@ export function ConnectedAppTransactionList() {
         setModalInputAmount(0);
         setModalInputCategory("");
         setModalSelectedType("Income");
-        //   onClose();
       }
     } else {
       alert("Os campos Titulo e Categoria não podem estar vazios !");
@@ -89,6 +97,9 @@ export function ConnectedAppTransactionList() {
                   <Input
                     type="number"
                     id="transaction-amount"
+                    onChange={(e) =>
+                      setModalInputAmount(parseInt(e.currentTarget.value))
+                    }
                     value={modalInputAmount}
                   />
                 </div>
@@ -96,7 +107,13 @@ export function ConnectedAppTransactionList() {
                   <Label htmlFor="transaction-category" className="text-left">
                     Categoria (tamanho máximo 56 caracters)
                   </Label>
-                  <Input id="transaction-category" value={modalInputCategory} />
+                  <Input
+                    id="transaction-category"
+                    onChange={(e) =>
+                      setModalInputCategory(e.currentTarget.value)
+                    }
+                    value={modalInputCategory}
+                  />
                 </div>
                 <div className="flex items-center gap-4">
                   <Button
@@ -131,72 +148,41 @@ export function ConnectedAppTransactionList() {
         </Dialog>
         <Button onClick={clearAllTransactions}>Limpar transações</Button>
       </div>
-      {/* {transactions && transactions.length > 0 ? (
-        <TableContainer>
-          <Table variant="simple">
-            <Thead>
-              <Tr>
-                <Th>Título</Th>
-                <Th>Valor</Th>
-                <Th display={{base: 'none', lg: 'table-cell'}}>Categoria</Th>
-                <Th display={{base: 'none', lg: 'table-cell'}}>Tipo</Th>
-                <Th display={{base: 'none', lg: 'table-cell'}}>Data</Th>
-                <Th isNumeric>Excluir</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              {transactions.map((transaction) => {
-                return (
-                  <Tr key={transaction.docId}>
-                    <Td>{transaction.title}</Td>
-                    <Td textColor={transaction.type === "Income" ? "rgba(18, 164, 84,0.6)" : "rgba(229, 46, 77, 0.6)"}>
-                      {new Intl.NumberFormat("pt-BR", {
-                        style: "currency",
-                        currency: "BRL",
-                      }).format(transaction.amount)}
-                    </Td>
-                    <Td display={{base: 'none', lg: 'table-cell'}}>{transaction.category}</Td>
-                    <Td display={{base: 'none', lg: 'table-cell'}} bgColor={transaction.type === "Income" ? "rgba(18, 164, 84,0.6)" : "rgba(229, 46, 77, 0.6)"} textColor="white" textAlign="center">
-                      {transaction.type === "Income" ? "Entrada" : "Retirada"}
-                    </Td>
-                    <Td display={{base: 'none', lg: 'table-cell'}}>
-                      {new Intl.DateTimeFormat("pt-BR").format(
-                        new Date(transaction.createdAt)
-                      )}
-                    </Td>
-                    <Td isNumeric>
-                      <IconButton
-                        onClick={() => {
-                          if (transaction.docId) {
-                            if (
-                              window.confirm(
-                                "Deseja realmente apagar o item da lista?"
-                              )
-                            ) {
-                              deleteTransaction(transaction.docId);
-                            }
-                          }
-                        }}
-                        icon={<DeleteIcon />}
-                        aria-label="Deletar item"
-                        variant="colorScheme='blue'
-              aria-label='Search database'"
-                      />
-                    </Td>
-                  </Tr>
-                );
-              })}
-            </Tbody>
-          </Table>
-        </TableContainer>
-      ) : (
-        <Flex flex="1" alignItems="start" justifyContent="center">
-          <Heading textAlign="center">
-            Parece que você não tem nenhuma transação adicionada, que tal
-            começar agora clicando em Nova Transação?
-          </Heading>
-        </Flex>
-      )} */}
+      {transactions && transactions.length > 0 ? (
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Titulo</TableHead>
+              <TableHead>Valor</TableHead>
+              <TableHead>Categoria</TableHead>
+              <TableHead>Tipo</TableHead>
+              <TableHead>Data</TableHead>
+              <TableHead className="text-right">Excluir</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {transactions.map((transaction) => (
+              <TableRow key={transaction.docId}>
+                <TableCell>{transaction.title}</TableCell>
+                <TableCell>{transaction.amount}</TableCell>
+                <TableCell>{transaction.category}</TableCell>
+                <TableCell>{transaction.type}</TableCell>
+                <TableCell>{transaction.createdAt}</TableCell>
+                <TableCell className="text-right">
+                  <Button
+                    onClick={() =>
+                      deleteTransaction(transaction.docId as string)
+                    }
+                    variant="ghost"
+                  >
+                    <Trash />
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      ) : null}
     </div>
   );
 }
