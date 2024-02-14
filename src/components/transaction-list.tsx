@@ -171,10 +171,21 @@ export function ConnectedAppTransactionList() {
             {transactions.map((transaction) => (
               <TableRow key={transaction.docId}>
                 <TableCell>{transaction.title}</TableCell>
-                <TableCell>{transaction.amount}</TableCell>
+                <TableCell>
+                  {new Intl.NumberFormat("pt-BR", {
+                    style: "currency",
+                    currency: "BRL",
+                  }).format(transaction.amount)}
+                </TableCell>
                 <TableCell>{transaction.category}</TableCell>
-                <TableCell>{transaction.type}</TableCell>
-                <TableCell>{transaction.createdAt}</TableCell>
+                <TableCell>
+                  {transaction.type === "Income" ? "Entrada" : "Retirada"}
+                </TableCell>
+                <TableCell>
+                  {new Intl.DateTimeFormat("pt-BR").format(
+                    new Date(transaction.createdAt)
+                  )}
+                </TableCell>
                 <TableCell className="text-right">
                   <Button
                     onClick={() =>
