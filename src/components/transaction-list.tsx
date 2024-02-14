@@ -66,7 +66,9 @@ export function ConnectedAppTransactionList() {
       <div className="flex items-center gap-4">
         <Dialog>
           <DialogTrigger className="w-fit ml-auto" asChild>
-            <Button variant="destructive">Nova transação</Button>
+            <Button disabled={!user} variant="destructive">
+              Nova transação
+            </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
@@ -146,7 +148,12 @@ export function ConnectedAppTransactionList() {
             </form>
           </DialogContent>
         </Dialog>
-        <Button onClick={clearAllTransactions}>Limpar transações</Button>
+        <Button
+          disabled={transactions.length <= 0 || !user}
+          onClick={clearAllTransactions}
+        >
+          Limpar transações
+        </Button>
       </div>
       {transactions && transactions.length > 0 ? (
         <Table>

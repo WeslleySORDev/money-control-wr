@@ -89,18 +89,20 @@ export function TransactionsProvider({ children }: ITransactionsProviderProps) {
   }
 
   async function deleteTransaction(docId: string) {
-    const indexOfTransaction = transactions.findIndex(
-      (transaction) => transaction.docId === docId
-    );
-    let newTransactions = [...transactions];
-    newTransactions.splice(indexOfTransaction, 1);
-    setTransactions(newTransactions);
-    const docRef = doc(db, "transactions", docId);
-    const transactionDoc = await getDoc(docRef);
-    if (transactionDoc.exists()) {
-      await deleteDoc(docRef);
-    } else {
-      console.log("Documento não encontrado!");
+    if (window.confirm("Deseja realmente apagar esse item da lista?")) {
+      const indexOfTransaction = transactions.findIndex(
+        (transaction) => transaction.docId === docId
+      );
+      let newTransactions = [...transactions];
+      newTransactions.splice(indexOfTransaction, 1);
+      setTransactions(newTransactions);
+      const docRef = doc(db, "transactions", docId);
+      const transactionDoc = await getDoc(docRef);
+      if (transactionDoc.exists()) {
+        await deleteDoc(docRef);
+      } else {
+        console.log("Documento não encontrado!");
+      }
     }
   }
 
