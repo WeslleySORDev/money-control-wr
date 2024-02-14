@@ -1,4 +1,5 @@
 import { ConnectedAppHeader } from "./components/header";
+import { ConnectedAppTransactionList } from "./components/transaction-list";
 import { Button } from "./components/ui/button";
 import { UserAuth } from "./context/AuthContext";
 
@@ -24,6 +25,7 @@ function App() {
         )}
       </header>
       <main>
+        <ConnectedAppTransactionList />
         {/* <Flex flexDirection="column" padding={["0", "0", "0", "4"]} gap={4} minHeight="100vh">
         <Summary />
         <Flex flex="1">

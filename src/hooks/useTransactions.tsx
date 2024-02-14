@@ -105,7 +105,7 @@ export function TransactionsProvider({ children }: ITransactionsProviderProps) {
   }
 
   async function clearAllTransactions() {
-    if (window.confirm("Deseja realmente apagar o item da lista?")) {
+    if (window.confirm("Deseja realmente apagar todos os itens da lista?")) {
       transactions.map(async (transaction) => {
         const docId = transaction.docId ? transaction.docId : "unknown";
         const docRef = doc(db, "transactions", docId);
